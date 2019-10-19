@@ -13,7 +13,13 @@ const controls = [
 const BuildControls = props => (
   <section className="BuildControls">
     {controls.map((control, key) => {
-      return <BuildControl key={key} label={control.label} />;
+      return (
+        <BuildControl
+          key={key}
+          label={control.label}
+          added={() => props.ingredientAdded(control.type)} // access each ingredient type and pass it as argument
+        />
+      );
     })}
   </section>
 );

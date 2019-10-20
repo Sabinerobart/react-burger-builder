@@ -8,3 +8,42 @@
   margin: auto;
   padding: 10px 0;
 }
+
+.OrderButton {
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  border: 1px solid #000;
+  color: #000;
+  font-family: inherit;
+  padding: 15px 30px;
+  margin: 1rem 0;
+  transition: 0.2s;
+}
+
+.OrderButton:not(:disabled):hover,
+.OrderButton:not(:disabled):active {
+  box-shadow: 2px 2px 2px #966909;
+}
+
+.OrderButton:disabled {
+  cursor: not-allowed;
+  border: 1px solid #927777;
+  color: #927777;
+}
+
+.OrderButton:not(:disabled) {
+  animation: enable 0.3s linear;
+}
+
+@keyframes enable {
+  0% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

@@ -25,7 +25,6 @@ class BurgerBuilder extends Component {
 
   addIngredientHandler = type => {
     const oldCount = this.state.ingredients[type];
-    console.log(oldCount);
     const updatedCount = oldCount + 1;
     const updatedIngredients = {
       ...this.state.ingredients
@@ -38,13 +37,43 @@ class BurgerBuilder extends Component {
     this.setState({ price: newPrice, ingredients: updatedIngredients });
   };
 
-  // addIngredientHandler = type => {};
+  removeIngredientHandler = type => {
+    const oldCount = this.state.ingredients[type];
+
+    // Avoid error when trying to remove an ingredient that doesn't exist. Works but useless now that the button is disabled
+    // if (oldCount <= 0) {
+    //   return; // if condition is met, stops here.
+    // }
+
+    const updatedCount = oldCount - 1;
+    const updatedIngredients = {
+      ...this.state.ingredients
+    }; // create new state because state should always be immutable
+
+    updatedIngredients[type] = updatedCount;
+    const priceDeduction = INGREDIENT_PRICES[type];
+    const oldPrice = this.state.price;
+    const newPrice = oldPrice + priceDeduction;
+    this.setState({ price: newPrice, ingredients: updatedIngredients });
+  };
 
   render() {
+    const disabledInfo = {
+      ...this.state.ingredients
+    }; // copied the ingredients state in an immutable way
+
+    for (let key in disabledInfo) {
+      disabledInfo[key] = disabledInfo[key] <= 0;
+    } // for each key in the previous state, returns true if left = right
+
     return (
       <Aux>
         <Burger ingredients={this.state.ingredients} />
-        <BuildControls ingredientAdded={this.addIngredientHandler} />
+        <BuildControls
+          ingredientAdded={this.addIngredientHandler}
+          ingredientRemoved={this.removeIngredientHandler}
+          disabled={disabledInfo}
+        />
       </Aux>
     );
   }

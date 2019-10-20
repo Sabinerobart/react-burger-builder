@@ -18,6 +18,8 @@ const BuildControls = props => (
           key={key}
           label={control.label}
           added={() => props.ingredientAdded(control.type)} // access each ingredient type and pass it as argument
+          removed={() => props.ingredientRemoved(control.type)}
+          disabled={props.disabled[control.type]}
         />
       );
     })}

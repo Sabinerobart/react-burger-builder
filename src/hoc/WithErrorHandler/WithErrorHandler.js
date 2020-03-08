@@ -9,7 +9,12 @@ const WithErrorHandler = (WrappedComponent, axios) => {
     state = {
       error: null
     }
-    componentDidMount() {
+
+    // Originally, componentDidMount, but since componentDidMount only renders after all
+    // child components have been rendered and the WrappedComponent never loads when there
+    // is an error (e.g. wrong Get route), the error is never handled
+    constructor() {
+      super();
       // Use axios interceptors to set the modal if an error occurs
 
       // clear the error when I send the request

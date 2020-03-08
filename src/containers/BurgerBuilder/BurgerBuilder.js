@@ -118,7 +118,6 @@ class BurgerBuilder extends Component {
       disabledInfo[key] = disabledInfo[key] <= 0;
     } // for each key in the previous state, returns true if left = right
 
-    console.log(this.state.error)
     let burger = this.state.error ? <p style={{ position: 'absolute', top: '45vh', left: '40vw' }}>Ingredients can't be loaded</p> : <Spinner />
     if (this.state.ingredients) {
       burger = (

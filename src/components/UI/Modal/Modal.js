@@ -8,7 +8,7 @@ import Backdrop from "../Backdrop/Backdrop";
 class Modal extends Component {
   // Improve performance by making sure the modal content updates only when the modal is displayed
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.show !== this.props.show
+    return nextProps.show !== this.props.show || nextProps.children !== this.props.children
   }
 
   componentWillUpdate() {

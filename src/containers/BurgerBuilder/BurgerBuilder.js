@@ -87,26 +87,35 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    this.setState({ loading: true })
-    // .json is for firebase, to create a new endpoint
-    const order = {
-      ingrendients: this.state.ingredients,
-      price: this.state.price,
-      customer: {
-        name: 'Max',
-        address: {
-          street: 'Teststreet 1',
-          zipCode: '345435',
-          country: 'France'
-        },
-        email: 'test@test.com'
-      },
-      deliveryMethod: 'fastest'
+    // this.setState({ loading: true })
+    // // .json is for firebase, to create a new endpoint
+    // const order = {
+    //   ingrendients: this.state.ingredients,
+    //   price: this.state.price,
+    //   customer: {
+    //     name: 'Max',
+    //     address: {
+    //       street: 'Teststreet 1',
+    //       zipCode: '345435',
+    //       country: 'France'
+    //     },
+    //     email: 'test@test.com'
+    //   },
+    //   deliveryMethod: 'fastest'
+    // }
+    // axios
+    //   .post('/orders.json', order)
+    //   .then(response => this.setState({ loading: false, purchasing: false }))
+    //   .catch(error => { this.setState({ loading: false, purchasing: false }); console.log(error) });
+    const queryParams = [];
+    for (let i in this.state.ingredients) {
+      queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
     }
-    axios
-      .post('/orders.json', order)
-      .then(response => this.setState({ loading: false, purchasing: false }))
-      .catch(error => { this.setState({ loading: false, purchasing: false }); console.log(error) });
+    const queryString = queryParams.join('&');
+    this.props.history.push({
+      pathname: '/checkout',
+      search: '?' + queryString
+    });
   };
 
   render() {

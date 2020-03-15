@@ -4,36 +4,76 @@ import axios from '../../../axios-orders';
 import './ContactData.css';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import Input from '../../../components/UI/Input/Input';
 
 class ContactData extends Component {
+  // Use a helper function to create the input fields ?
+
   state = {
-    name: '',
-    email: '',
-    address: {
-      street: '',
-      postalCode: ''
+    orderForm: {
+      name: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your name'
+        },
+        value: '',
+      },
+      street: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your address'
+        },
+        value: '',
+      },
+      zipCode: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Zip Code'
+        },
+        value: '',
+      },
+      country: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Country'
+        },
+        value: '',
+      },
+      email: {
+        elementType: 'email',
+        elementConfig: {
+          type: 'email',
+          placeholder: 'Your email'
+        },
+        value: '',
+      },
+      deliveryMethod: {
+        elementType: 'select',
+        elementConfig: {
+          options: [
+            { value: 'fastest', displayValue: 'Fastest' },
+            { value: 'cheapest', displayValue: 'Cheapest' }
+          ]
+        },
+        value: '',
+      },
     }
   }
 
   orderHandler = (e) => {
     e.preventDefault();
     this.setState({ loading: true });
-    // .json is for firebase, to create a new endpoint
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      customer: {
-        name: 'Max',
-        address: {
-          street: 'Teststreet 1',
-          zipCode: '345435',
-          country: 'France'
-        },
-        email: 'test@test.com'
-      },
-      deliveryMethod: 'fastest'
+
     }
     axios
+      // .json is for firebase, to create a new endpoint
       .post('/orders.json', order)
       .then(response => {
         this.setState({ loading: false, purchasing: false });
@@ -42,14 +82,41 @@ class ContactData extends Component {
       .catch(error => { this.setState({ loading: false }); console.log(error) });
   }
 
+  inputChangedHandler = (e, inputIdentifier) => {
+    const updatedOrderForm = {
+      ...this.state.orderForm,
+    }
+    // deep clone the state's object we want to modify
+    const updatedFormElement = {
+      ...updatedOrderForm[inputIdentifier]
+    };
+    updatedFormElement.value = e.target.value;
+    updatedOrderForm[inputIdentifier] = updatedFormElement;
+    this.setState({ orderForm: updatedOrderForm })
+  }
+
   render() {
-    let form = (<form>
-      <input type='text' name='name' placeholder="Your name" />
-      <input type='email' name='email' placeholder="Your email" />
-      <input type='text' name='street' placeholder="Street" />
-      <input type='text' name='postal' placeholder="Postal Code" />
-      <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
-    </form>);
+    const formElementsArray = [];
+    for (let key in this.state.orderForm) {
+      formElementsArray.push({
+        id: key,
+        config: this.state.orderForm[key]
+      })
+    }
+    let form = (
+      <form>
+        {formElementsArray.map(formElement => (
+          <Input
+            key={formElement.id}
+            elementType={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value}
+            changed={(e) => this.inputChangedHandler(e, formElement.id)}
+          />
+        ))}
+        <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
+      </form>
+    );
     if (this.state.loading) {
       form = <Spinner />
     }

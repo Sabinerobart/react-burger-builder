@@ -45,7 +45,7 @@ class Checkout extends Component {
           path={this.props.match.url + '/contact-data'}
           // component={ContactData} 
           // Use the render prop to be able to pass props to the component
-          render={(props) => <ContactData ingredients={this.state.ingredients} price={this.state.totalPrice} {...props} />}
+          render={(props) => <ContactData ingredients={this.state.ingredients} price={this.state.totalPrice.toFixed(2)} {...props} />}
         />
       </div>
     )

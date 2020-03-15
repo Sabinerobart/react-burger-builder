@@ -22,3 +22,8 @@
 .Danger {
     color: #944317;
 }
+
+[disabled] {
+  color: grey;
+  pointer-events: none;
+}

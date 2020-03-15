@@ -5,24 +5,34 @@ import './Input.css';
 const Input = (props) => {
 
   let inputElement = null;
+  const inputClasses = ['InputElement']
+  if (props.invalid && props.shouldValidate && props.touched) {
+    inputClasses.push('Invalid')
+  }
+  let validationError = null;
+  if (props.invalid && props.touched) {
+    validationError = <p className="ValidationError">Please enter a valid value !</p>;
+  }
+
+
   switch (props.elementType) {
     case ('input'):
       inputElement = <input
-        className="InputElement"
+        className={inputClasses.join(' ')}
         {...props.elementConfig}
         onChange={props.changed}
         value={props.value} />
       break;
     case ('textarea'):
       inputElement = <textarea
-        className="InputElement"
+        className={inputClasses.join(' ')}
         {...props.elementConfig}
         onChange={props.changed}
         value={props.value} />
       break;
     case ('email'):
       inputElement = <input
-        className="InputElement"
+        className={inputClasses.join(' ')}
         {...props.elementConfig}
         onChange={props.changed}
         value={props.value} />
@@ -56,6 +66,7 @@ const Input = (props) => {
     <div className='Input'>
       <label className="Label">{props.label}</label>
       {inputElement}
+      {validationError}
     </div>
   )
 }

@@ -1,3 +1,11 @@
+# Burger Builder
+
+> On the `initial-project` branch, the app is developped using classes & props drilling.
+
+> On the `with-redux` branch, the app is re-organized using global state management.
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

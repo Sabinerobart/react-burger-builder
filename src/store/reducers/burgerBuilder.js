@@ -37,7 +37,13 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_INGREDIENTS:
       return {
         ...state,
-        ingredients: action.ingredients,
+        // ingredients: ingredients // set manually for a coherent UI
+        ingredients: {
+          salad: action.ingredients.salad,
+          bacon: action.ingredients.bacon,
+          cheese: action.ingredients.cheese,
+          meat: action.ingredients.meat,
+        },
         error: false // in case we had an error earlier, that we don't have now
       };
 

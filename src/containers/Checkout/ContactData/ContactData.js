@@ -110,17 +110,7 @@ class ContactData extends Component {
       price: this.props.price,
       orderData: formData,
     };
-    axios
-      // .json is for firebase, to create a new endpoint
-      .post("/orders.json", order)
-      .then((response) => {
-        this.setState({ loading: false, purchasing: false });
-        this.props.history.push("/");
-      })
-      .catch((error) => {
-        this.setState({ loading: false });
-        console.log(error);
-      });
+    //
   };
 
   inputChangedHandler = (e, inputIdentifier) => {

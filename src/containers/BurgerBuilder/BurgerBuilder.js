@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import axios from "../../axios-orders";
 
 import Aux from "../../hoc/Aux/Aux";
 import Burger from "../../components/Burger/Burger";
@@ -8,23 +9,15 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import WithErrorHandler from "../../hoc/WithErrorHandler/WithErrorHandler";
-import axios from "../../axios-orders";
 import * as actions from "../../store/actions/";
 
 class BurgerBuilder extends Component {
   state = {
-    purchasing: false,
-    loading: false,
-    error: false,
+    purchasing: false
   };
 
   componentDidMount() {
-    // axios
-    //   .get("/ingredients.json")
-    //   .then((response) => {
-    //     this.setState({ ingredients: response.data });
-    //   })
-    //   .catch((error) => this.setState({ error: true }));
+    this.props.onInitIngredients();
   }
 
   updatePurchase(ingredients) {
@@ -57,7 +50,7 @@ class BurgerBuilder extends Component {
       disabledInfo[key] = disabledInfo[key] <= 0;
     } // for each key in the previous state, returns true if left = right
 
-    let burger = this.state.error ? (
+    let burger = this.props.error ? (
       <p style={{ position: "absolute", top: "45vh", left: "40vw" }}>
         Ingredients can't be loaded
       </p>
@@ -91,10 +84,6 @@ class BurgerBuilder extends Component {
         />
       );
     }
-    if (this.state.loading) {
-      orderSummary = <Spinner />;
-    }
-
     return (
       <Aux>
         {burger}
@@ -113,6 +102,7 @@ const mapStateToProps = (state) => {
   return {
     ings: state.ingredients,
     price: state.totalPrice,
+    error: state.error
   };
 };
 
@@ -122,6 +112,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.addIngredient(ingName)),
     onIngredientRemoved: (ingName) =>
       dispatch(actions.removeIngredient(ingName)),
+    onInitIngredients: () => dispatch(actions.initIngredients())
   };
 };
 

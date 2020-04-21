@@ -1,13 +1,9 @@
 import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
-  ingredients: {
-    salad: 0,
-    bacon: 0,
-    cheese: 0,
-    meat: 0,
-  },
+  ingredients: null,
   totalPrice: 4,
+  error: false
 };
 
 // global constants in capital letters
@@ -38,6 +34,18 @@ const reducer = (state = initialState, action) => {
         },
         totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
       };
+    case actionTypes.SET_INGREDIENTS:
+      return {
+        ...state,
+        ingredients: action.ingredients,
+        error: false // in case we had an error earlier, that we don't have now
+      };
+
+    case actionTypes.FETCH_INGREDIENTS_FAILED:
+      return {
+        ...state,
+        error: true
+      }
     default:
       return state;
   }
